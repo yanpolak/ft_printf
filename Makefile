@@ -3,34 +3,70 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ymarival <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: ymarival <ymarival@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/11/15 00:40:06 by ymarival          #+#    #+#              #
-#    Updated: 2022/11/15 18:25:44 by ymarival         ###   ########.fr        #
+#    Created: 2025/01/22 18:45:55 by ymarival          #+#    #+#              #
+#    Updated: 2025/01/24 05:11:20 by ymarival         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS		=	ft_printf.c ft_numbers.c ft_words.c \
+NAME = libftprintf.a
 
-OBJS		=	${SRCS:.c=.o}
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
+AR = ar rcs
+RM = rm -f
 
-CC			= gcc
+# Directories
+INC_DIR = include/
+SRC_DIR = srcs/
+BONUS_DIR = srcs_bonus/
+LIBFT_DIR = libft
+LIBFT = $(LIBFT_DIR)/libft.a
 
-RM			= rm -f
+# Source files
+SRCS = ft_printf.c ft_format.c ft_parse.c ft_print_chars.c ft_print_nbrs.c ft_print_hex.c
+BONUS = ft_printf_bonus.c ft_format_bonus.c ft_parse_bonus.c ft_print_chars_bonus.c \
+		 ft_print_nbrs_bonus.c ft_print_hex_bonus.c ft_print_hex_utils_bonus.c ft_print_nbrs_utils_bonus.c \
 
-CFLAGS		= -Wall -Wextra -Werror
+# Object files
+OBJS = $(addprefix $(SRC_DIR), $(SRCS:.c=.o))
+BONUS_OBJS = $(addprefix $(BONUS_DIR), $(BONUS:.c=.o))
 
-NAME = 		libftprintf.a
+# Include flags
+# Include flags
+INC_FLAGS = -I$(INC_DIR) -I$(LIBFT_DIR) -I.
 
-all:		${NAME}
+# Compilation rules
+all: $(LIBFT) $(NAME)
 
-$(NAME):	${OBJS}
-			ar rc ${NAME} ${OBJS}
+$(LIBFT):
+	@make -C $(LIBFT_DIR)
+
+$(NAME): $(OBJS)
+	cp $(LIBFT) $(NAME)
+	$(AR) $(NAME) $(OBJS)
+	ranlib $(NAME)
+
+bonus: $(BONUS_OBJS)
+	cp $(LIBFT) $(NAME)
+	$(AR) $(NAME) $(BONUS_OBJS)
+	ranlib $(NAME)
+
+$(SRC_DIR)%.o: $(SRC_DIR)%.c
+	$(CC) $(CFLAGS) $(INC_FLAGS) -c $< -o $@
+
+$(BONUS_DIR)%.o: $(BONUS_DIR)%.c
+	$(CC) $(CFLAGS) $(INC_FLAGS) -c $< -o $@
 
 clean:
-			${RM} ${OBJS}
+	$(RM) -v $(OBJS) $(BONUS_OBJS)
+	@make clean -C $(LIBFT_DIR)
 
-fclean:		clean
-			${RM} ${NAME}
+fclean: clean
+	$(RM) $(NAME)
+	@make fclean -C $(LIBFT_DIR)
 
-re:			fclean ${NAME}
+re: fclean all
+
+.PHONY: all bonus clean fclean re
