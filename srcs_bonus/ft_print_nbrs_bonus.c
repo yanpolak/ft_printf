@@ -6,7 +6,7 @@
 /*   By: ymarival <ymarival@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:39:40 by ymarival          #+#    #+#             */
-/*   Updated: 2025/01/22 18:39:47 by ymarival         ###   ########.fr       */
+/*   Updated: 2025/01/29 00:47:02 by ymarival         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static char	get_sign(t_format f, int neg)
 {
 	if (neg)
 		return ('-');
-	if (f.plus)
+	if (f.plus_flag)
 		return ('+');
 	return (0);
 }
@@ -24,7 +24,7 @@ static char	get_sign(t_format f, int neg)
 static int	ft_handle_prefix(t_format f, char sign, int neg, int c)
 {
 	if (f.specifier != 'u')
-		f.width -= (f.space && !neg && !f.plus);
+		f.width -= (f.space && !neg && !f.plus_flag);
 	if (sign && f.specifier != 'u')
 		c += ft_putnchar_fd(sign, 1, f.zero && (!f.dot || f.neg_prec));
 	else if (f.space && f.specifier != 'u')

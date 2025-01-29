@@ -6,13 +6,13 @@
 /*   By: ymarival <ymarival@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 21:33:57 by ymarival          #+#    #+#             */
-/*   Updated: 2025/01/22 21:34:02 by ymarival         ###   ########.fr       */
+/*   Updated: 2025/01/28 22:26:34 by ymarival         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_printf.h"
 
-int	ft_print_c_pct(t_format f, va_list ap)
+int	ft_char(t_format f, va_list ap)
 {
 	char	c;
 	int		count;
@@ -22,7 +22,6 @@ int	ft_print_c_pct(t_format f, va_list ap)
 		c = va_arg(ap, int);
 	else
 		c = '%';
-	f.precision = 1;
 	if (!f.minus && f.zero)
 		count += ft_putnchar_fd('0', 1, f.width - f.precision);
 	else if (!f.minus && f.width > f.precision)
@@ -33,7 +32,7 @@ int	ft_print_c_pct(t_format f, va_list ap)
 	return (count);
 }
 
-int	ft_print_s(t_format f, va_list ap)
+int	ft_str(t_format f, va_list ap)
 {
 	char	*string;
 	int		count;

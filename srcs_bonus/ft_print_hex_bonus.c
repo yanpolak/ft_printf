@@ -6,7 +6,7 @@
 /*   By: ymarival <ymarival@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:44:34 by ymarival          #+#    #+#             */
-/*   Updated: 2025/01/22 18:44:49 by ymarival         ###   ########.fr       */
+/*   Updated: 2025/01/29 00:29:32 by ymarival         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	ft_get_precision_pad(t_format f, int len)
 	return (0);
 }
 
-int	ft_print_x(t_format f, va_list ap)
+int	ft_hex(t_format f, va_list ap)
 {
 	int				count;
 	unsigned int	n;
@@ -63,21 +63,21 @@ int	ft_print_x(t_format f, va_list ap)
 		f.precision = len;
 	if (f.sharp && n)
 		f.width -= 2;
-	count += ft_putstrn_fd(ft_sharp(f), 1, 2 * (f.sharp && f.zero && n));
+	count += ft_putstrn_fd(ft_hex_pref(f), 1, 2 * (f.sharp && f.zero && n));
 	if (!f.minus && f.width > f.precision && (!f.dot || f.neg_prec) && f.zero)
 		count += ft_putnchar_fd('0', 1, (f.width - f.precision));
 	else if (!f.minus && f.width > f.precision)
 		count += ft_putnchar_fd(' ', 1, (f.width - f.precision));
-	count += ft_putstrn_fd(ft_sharp(f), 1, 2 * (f.sharp && !f.zero && n));
+	count += ft_putstrn_fd(ft_hex_pref(f), 1, 2 * (f.sharp && !f.zero && n));
 	count += ft_putnchar_fd('0', 1, (f.precision - len));
 	if (len)
-		count += ft_recursive_hex(f, n, n);
+		count += ft_hex_rec(f, n, n);
 	if (f.minus && f.width > f.precision)
 		count += ft_putnchar_fd(' ', 1, f.width - f.precision);
 	return (count);
 }
 
-int	ft_print_p(t_format f, va_list ap)
+int	ft_ptr(t_format f, va_list ap)
 {
 	int		count;
 	size_t	n;
@@ -94,7 +94,7 @@ int	ft_print_p(t_format f, va_list ap)
 		count += ft_handle_width(f, len, precision_pad);
 	count += write(1, "0x", 2);
 	count += ft_putnchar_fd('0', 1, precision_pad);
-	count += ft_recursive_hex(f, n, n);
+	count += ft_hex_rec(f, n, n);
 	if (f.minus)
 		count += ft_handle_width(f, len, precision_pad);
 	return (count);

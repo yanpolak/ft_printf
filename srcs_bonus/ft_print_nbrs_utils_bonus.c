@@ -25,7 +25,7 @@ static void	prepare_number(t_format *f, va_list ap, char **nbr, int *neg)
 	*neg = 0;
 	if (f->specifier == 'u')
 	{
-		f->plus = 0;
+		f->plus_flag = 0;
 		f->space = 0;
 		n = va_arg(ap, unsigned int);
 		*nbr = ft_uitoa(n);
@@ -34,7 +34,7 @@ static void	prepare_number(t_format *f, va_list ap, char **nbr, int *neg)
 	num = va_arg(ap, int);
 	*neg = (num < 0);
 	if (*neg || num == INT_MIN)
-		f->plus = 0;
+		f->plus_flag = 0;
 	if (num == INT_MIN)
 		*nbr = handle_int_min();
 	else
@@ -45,7 +45,7 @@ static void	prepare_number(t_format *f, va_list ap, char **nbr, int *neg)
 	}
 }
 
-int	ft_print_d_i_u(t_format f, va_list ap)
+int	ft_nbr(t_format f, va_list ap)
 {
 	char	*nbr;
 	int		c;

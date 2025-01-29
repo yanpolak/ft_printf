@@ -6,7 +6,7 @@
 /*   By: ymarival <ymarival@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:45:38 by ymarival          #+#    #+#             */
-/*   Updated: 2025/01/22 18:45:40 by ymarival         ###   ########.fr       */
+/*   Updated: 2025/01/28 22:36:12 by ymarival         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_printf(const char *str, ...)
 		{
 			first = (char *)str;
 			if (*(++str))
-				count += ft_parse((char *)str, ap);
+				count += ft_read((char *)str, ap);
 			while (*str && !ft_strchr(SPECIFIERS, *str))
 				str++;
 			if (!(*str))
@@ -41,20 +41,20 @@ int	ft_printf(const char *str, ...)
 	return (count);
 }
 
-int	ft_print_format(t_format f, va_list ap)
+int	ft_write(t_format f, va_list ap)
 {
 	int	count;
 
 	count = 0;
 	if (f.specifier == 'c' || f.specifier == '%')
-		count = ft_print_c_pct(f, ap);
+		count = ft_char(f, ap);
 	if (f.specifier == 's')
-		count = ft_print_s(f, ap);
+		count = ft_str(f, ap);
 	if (f.specifier == 'd' || f.specifier == 'i' || f.specifier == 'u')
-		count = ft_print_d_i_u(f, ap);
+		count = ft_nbr(f, ap);
 	if (f.specifier == 'X' || f.specifier == 'x')
-		count = ft_print_x(f, ap);
+		count = ft_hex(f, ap);
 	if (f.specifier == 'p')
-		count = ft_print_p(f, ap);
+		count = ft_ptr(f, ap);
 	return (count);
 }

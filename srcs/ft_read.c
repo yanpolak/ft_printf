@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parse.c                                         :+:      :+:    :+:   */
+/*   ft_read.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymarival <ymarival@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/22 21:22:33 by ymarival          #+#    #+#             */
-/*   Updated: 2025/01/22 21:22:38 by ymarival         ###   ########.fr       */
+/*   Created: 2025/01/28 22:52:46 by ymarival          #+#    #+#             */
+/*   Updated: 2025/01/29 00:47:02 by ymarival         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_printf.h"
 
-static t_format	ft_parse_width(char *str, va_list	ap, t_format f)
+static t_format	ft_read_width(char *str, va_list	ap, t_format f)
 {
 	int	specified;
 
@@ -36,12 +36,12 @@ static t_format	ft_parse_width(char *str, va_list	ap, t_format f)
 	return (f);
 }
 
-static t_format	ft_parse_bonus(char *str, t_format f)
+static t_format	ft_read_bonus(char *str, t_format f)
 {
 	while (*str != '.' && !ft_strchr(SPECIFIERS, *str))
 	{
 		if (*str == '+')
-			f.plus = 1;
+			f.plus_flag = 1;
 		if (*str == ' ')
 			f.space = 1;
 		if (*str == '#')
@@ -71,12 +71,30 @@ static t_format	ft_parse_precision(char *str, va_list ap, t_format f)
 	return (f);
 }
 
-int	ft_parse(char *str, va_list	ap)
+int	ft_write(t_format f, va_list	ap)
+{
+	int	count;
+
+	count = 0;
+	if (f.specifier == 'c' || f.specifier == '%')
+		count = ft_char(f, ap);
+	if (f.specifier == 's')
+		count = ft_str(f, ap);
+	if (f.specifier == 'd' || f.specifier == 'i' || f.specifier == 'u')
+		count = ft_nbr(f, ap);
+	if (f.specifier == 'X' || f.specifier == 'x')
+		count = ft_hex(f, ap);
+	if (f.specifier == 'p')
+		count = ft_ptr(f, ap);
+	return (count);
+}
+
+int	ft_read(char *str, va_list	ap)
 {
 	t_format	new_format;
 
-	new_format = ft_parse_width(str, ap, ft_newformat());
-	new_format = ft_parse_bonus(str, new_format);
+	new_format = ft_read_width(str, ap, ft_fmt());
+	new_format = ft_read_bonus(str, new_format);
 	while (!ft_strchr(SPECIFIERS, *str) && *str != '.')
 		str++;
 	if (*str == '.' && !new_format.specifier)
@@ -93,5 +111,5 @@ int	ft_parse(char *str, va_list	ap)
 	}
 	new_format.specifier = *str;
 	new_format.neg_prec = new_format.precision < 0;
-	return (ft_print_format(new_format, ap));
+	return (ft_write(new_format, ap));
 }

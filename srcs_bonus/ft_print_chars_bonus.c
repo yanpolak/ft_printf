@@ -6,13 +6,13 @@
 /*   By: ymarival <ymarival@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:44:19 by ymarival          #+#    #+#             */
-/*   Updated: 2025/01/22 18:44:22 by ymarival         ###   ########.fr       */
+/*   Updated: 2025/01/28 22:26:34 by ymarival         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_printf_bonus.h"
 
-int	ft_print_c_pct(t_format f, va_list ap)
+int	ft_char(t_format f, va_list ap)
 {
 	char	c;
 	int		count;
@@ -54,7 +54,7 @@ static int	ft_print_padding(t_format f, int count, int precision)
 	return (count);
 }
 
-int	ft_print_s(t_format f, va_list ap)
+int	ft_str(t_format f, va_list ap)
 {
 	char	*string;
 	int		count;

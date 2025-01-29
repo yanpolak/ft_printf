@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_format_bonus.c                                  :+:      :+:    :+:   */
+/*   ft_fmt_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymarival <ymarival@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/22 18:43:47 by ymarival          #+#    #+#             */
-/*   Updated: 2025/01/22 18:43:53 by ymarival         ###   ########.fr       */
+/*   Created: 2025/01/28 22:44:43 by ymarival          #+#    #+#             */
+/*   Updated: 2025/01/29 01:02:08 by ymarival         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_printf_bonus.h"
 
-t_format	ft_newformat(void)
+t_format	ft_fmt(void)
 {
-	t_format	newformat;
+	t_format	initformat;
 
-	newformat.minus = 0;
-	newformat.plus = 0;
-	newformat.width = 0;
-	newformat.precision = 0;
-	newformat.specifier = 0;
-	newformat.zero = 0;
-	newformat.dot = 0;
-	newformat.space = 0;
-	newformat.sharp = 0;
-	newformat.neg_prec = 0;
-	return (newformat);
+	initformat.minus = 0;
+	initformat.plus_flag = 0;
+	initformat.width = 0;
+	initformat.precision = 0;
+	initformat.specifier = 0;
+	initformat.zero = 0;
+	initformat.dot = 0;
+	initformat.space = 0;
+	initformat.sharp = 0;
+	initformat.neg_prec = 0;
+	return (initformat);
 }

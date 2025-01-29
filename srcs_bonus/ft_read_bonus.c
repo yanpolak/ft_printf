@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parse_bonus.c                                   :+:      :+:    :+:   */
+/*   ft_read_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ymarival <ymarival@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/22 18:44:07 by ymarival          #+#    #+#             */
-/*   Updated: 2025/01/22 18:44:10 by ymarival         ###   ########.fr       */
+/*   Created: 2025/01/28 22:53:36 by ymarival          #+#    #+#             */
+/*   Updated: 2025/01/29 00:47:02 by ymarival         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_printf_bonus.h"
 
-static t_format	ft_parse_bonus(char *str, t_format f)
+static t_format	ft_read_bonus(char *str, t_format f)
 {
 	while (*str != '.' && !ft_strchr(SPECIFIERS, *str))
 	{
 		if (*str == '+')
-			f.plus = 1;
+			f.plus_flag = 1;
 		if (*str == ' ')
 			f.space = 1;
 		if (*str == '#')
@@ -27,7 +27,7 @@ static t_format	ft_parse_bonus(char *str, t_format f)
 	return (f);
 }
 
-static t_format	ft_parse_width(char *str, va_list	ap, t_format f)
+static t_format	ft_read_width(char *str, va_list	ap, t_format f)
 {
 	int	specified;
 
@@ -71,12 +71,12 @@ static t_format	ft_parse_precision(char *str, va_list ap, t_format f)
 	return (f);
 }
 
-int	ft_parse(char *str, va_list	ap)
+int	ft_read(char *str, va_list	ap)
 {
 	t_format	new_format;
 
-	new_format = ft_parse_width(str, ap, ft_newformat());
-	new_format = ft_parse_bonus(str, new_format);
+	new_format = ft_read_width(str, ap, ft_fmt());
+	new_format = ft_read_bonus(str, new_format);
 	while (!ft_strchr(SPECIFIERS, *str) && *str != '.')
 		str++;
 	if (*str == '.' && !new_format.specifier)
@@ -93,5 +93,5 @@ int	ft_parse(char *str, va_list	ap)
 	}
 	new_format.specifier = *str;
 	new_format.neg_prec = new_format.precision < 0;
-	return (ft_print_format(new_format, ap));
+	return (ft_write(new_format, ap));
 }
